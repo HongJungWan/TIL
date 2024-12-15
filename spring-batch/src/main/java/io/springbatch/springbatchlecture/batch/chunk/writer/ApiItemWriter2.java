@@ -15,28 +15,32 @@ import java.util.List;
 @Slf4j
 public class ApiItemWriter2 extends FlatFileItemWriter<ApiRequestVO> {
 
-    private AbstractApiService apiService;
+    private AbstractApiService apiService; // 라인 집계기 설정 (기본 구분자 사용)
 
     public ApiItemWriter2(AbstractApiService apiService) {
-        this.apiService = apiService;
+        this.apiService = apiService; // 의존성 주입을 통해 서비스 인스턴스 할당
     }
 
     @Override
     public void write(List<? extends ApiRequestVO> items) throws Exception {
 
+    	// 디버깅을 위한 출력
         System.out.println("----------------------------------");
         items.forEach(item -> System.out.println("items = " + item));
         System.out.println("----------------------------------");
 
+        // API 서비스를 호출하여 응답 받기
         ApiResponseVO response = apiService.service(items);
         System.out.println("response = " + response);
 
+        // 응답을 각 아이템에 설정
         items.forEach(item -> item.setApiResponseVO(response));
 
-        super.setResource(new FileSystemResource("C:\\jsw\\inflearn\\spring-batch-lecture\\src\\main\\resources\\product2.txt"));
-        super.open(new ExecutionContext());
-        super.setLineAggregator(new DelimitedLineAggregator<>());
-        super.setAppendAllowed(true);
-        super.write(items);
+        // 파일 쓰기 설정
+        super.setResource(new FileSystemResource("C:\\jsw\\inflearn\\spring-batch-lecture\\src\\main\\resources\\product2.txt")); // 출력 파일 경로 설정
+        super.open(new ExecutionContext()); // 실행 컨텍스트 열기
+        super.setLineAggregator(new DelimitedLineAggregator<>()); // 라인 집계기 설정 (기본 구분자 사용)
+        super.setAppendAllowed(true); // 파일에 추가 모드 설정
+        super.write(items); // 실제 파일에 아이템 쓰기
     }
 }
