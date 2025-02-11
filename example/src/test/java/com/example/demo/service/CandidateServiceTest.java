@@ -8,62 +8,67 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CandidateStatusTest {
+class CandidateServiceTest {
+
+    private final CandidateService candidateService = new CandidateService();
 
     @Test
-    @DisplayName("APPLIED 상태의 process 메서드 테스트")
-    void testProcessApplied() {
+    @DisplayName("APPLIED 상태일 때 후보자 처리 테스트")
+    void testProcessCandidateWithAppliedStatus() {
         // given
-        Candidate candidate = new Candidate("홍길동", CandidateStatus.APPLIED);
+        String name = "홍길동";
+        CandidateStatus status = CandidateStatus.APPLIED;
+        String expected = ConstantMessage.APPLIED_MESSAGE + name;
 
         // when
-        String expected = ConstantMessage.APPLIED_MESSAGE + candidate.getName();
-        String result = CandidateStatus.APPLIED.process(candidate);
+        String result = candidateService.processCandidate(name, status);
 
         // then
         assertEquals(expected, result);
     }
 
     @Test
-    @DisplayName("INTERVIEW 상태의 process 메서드 테스트")
-    void testProcessInterview() {
+    @DisplayName("INTERVIEW 상태일 때 후보자 처리 테스트")
+    void testProcessCandidateWithInterviewStatus() {
         // given
-        Candidate candidate = new Candidate("김철수", CandidateStatus.INTERVIEW);
+        String name = "김철수";
+        CandidateStatus status = CandidateStatus.INTERVIEW;
+        String expected = ConstantMessage.INTERVIEW_MESSAGE + name;
 
         // when
-        String expected = ConstantMessage.INTERVIEW_MESSAGE + candidate.getName();
-        String result = CandidateStatus.INTERVIEW.process(candidate);
+        String result = candidateService.processCandidate(name, status);
 
         // then
         assertEquals(expected, result);
     }
 
     @Test
-    @DisplayName("OFFER 상태의 process 메서드 테스트")
-    void testProcessOffer() {
+    @DisplayName("OFFER 상태일 때 후보자 처리 테스트")
+    void testProcessCandidateWithOfferStatus() {
         // given
-        Candidate candidate = new Candidate("이영희", CandidateStatus.OFFER);
+        String name = "이영희";
+        CandidateStatus status = CandidateStatus.OFFER;
+        String expected = ConstantMessage.OFFER_MESSAGE + name;
 
         // when
-        String expected = ConstantMessage.OFFER_MESSAGE + candidate.getName();
-        String result = CandidateStatus.OFFER.process(candidate);
+        String result = candidateService.processCandidate(name, status);
 
         // then
         assertEquals(expected, result);
     }
 
     @Test
-    @DisplayName("REJECT 상태의 process 메서드 테스트")
-    void testProcessReject() {
+    @DisplayName("REJECT 상태일 때 후보자 처리 테스트")
+    void testProcessCandidateWithRejectStatus() {
         // given
-        Candidate candidate = new Candidate("박민수", CandidateStatus.REJECT);
+        String name = "박민수";
+        CandidateStatus status = CandidateStatus.REJECT;
+        String expected = ConstantMessage.REJECT_MESSAGE + name;
 
         // when
-        String expected = ConstantMessage.REJECT_MESSAGE + candidate.getName();
-        String result = CandidateStatus.REJECT.process(candidate);
+        String result = candidateService.processCandidate(name, status);
 
         // then
         assertEquals(expected, result);
     }
-
 }
